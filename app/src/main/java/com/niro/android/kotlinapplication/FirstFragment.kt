@@ -39,7 +39,7 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonFirst.setOnClickListener {
-            val editText = binding.edittextId.editableText
+            val editText = binding.editTextId.editableText
             val user = userAPIService.getUser(editText);
 
             user.enqueue(object : Callback<User> {
