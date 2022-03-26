@@ -6,8 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.niro.android.kotlinapplication.adapters.PhotoAdapter
 import com.niro.android.kotlinapplication.api.UserAPIService
 import com.niro.android.kotlinapplication.databinding.FragmentFirstBinding
+import com.niro.android.kotlinapplication.model.Photo
 import com.niro.android.kotlinapplication.model.User
 import retrofit2.Call
 import retrofit2.Response
@@ -37,27 +40,42 @@ class FirstFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.recyclerview.layoutManager = LinearLayoutManager(view.context)
+        val photos = userAPIService.getPhotos()
 
-        binding.buttonFirst.setOnClickListener {
-            val editText = binding.editTextId.editableText
-            val user = userAPIService.getUser(editText);
+        photos.enqueue(object :Callback<List<Photo>>{
+            override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+                val photosBody = response.body()
+                val adapter = PhotoAdapter(photosBody!!)
+                binding.recyclerview.adapter = adapter
+            }
 
-            user.enqueue(object : Callback<User> {
-                override fun onResponse(call: Call<User>, response: Response<User>) {
+            override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
 
-                    val body = response.body()
-                    body?.let {
-                        Log.i("FirstFragment Name:", it.name)
-                        binding.textviewUserName.text = it.name
-                        binding.textviewUserEmail.text = it.email
-                    }
-                }
+            }
 
-                override fun onFailure(call: Call<User>, t: Throwable) {
-                    TODO("Not yet implemented")
-                }
-            })
-        }
+        })
+
+//        binding.buttonFirst.setOnClickListener {
+//            val editText = binding.editTextId.editableText
+//            val user = userAPIService.getUser(editText);
+//
+//            user.enqueue(object : Callback<User> {
+//                override fun onResponse(call: Call<User>, response: Response<User>) {
+//
+//                    val body = response.body()
+//                    body?.let {
+//                        Log.i("FirstFragment Name:", it.name)
+//                        binding.textviewUserName.text = it.name
+//                        binding.textviewUserEmail.text = it.email
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<User>, t: Throwable) {
+//                    TODO("Not yet implemented")
+//                }
+//            })
+//        }
     }
 
     override fun onDestroyView() {
