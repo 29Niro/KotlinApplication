@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/MapsFragment">
 
     <fragment
         android:id="@+id/FirstFragment"
@@ -15,6 +15,14 @@
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/MapsFragment"
+        android:name="com.niro.android.kotlinapplication.MapsFragment"
+        android:label="@string/map_fragment_label"
+        tools:layout="@layout/fragment_maps">
+    </fragment>
+
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.niro.android.kotlinapplication.SecondFragment"
